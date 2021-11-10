@@ -7,7 +7,6 @@ class lambda_handler:
     
     #Citation: learned how to create lambda function with .zip file from Stack Overflow
     #Link: https://stackoverflow.com/questions/63040090/create-aws-lambda-function-using-boto3-python-code
-
     def create_lambda(self):
         response = self.client.create_function(
             FunctionName = self.handler_name,
@@ -20,7 +19,18 @@ class lambda_handler:
         )
         print(response)
         return response
+    
+    def delete_lambda(self):
+        response = self.client.delete_function(
+            FunctionName = self.handler_name
+        )
+        print(response)
+        return response
 
-
-newlambda = lambda_handler("upload-handler")
-newlambda.create_lambda()
+#Create Function for Debugging
+if __name__ == "__main__":
+    import time
+    newlambda = lambda_handler("upload-handler")
+    newlambda.create_lambda()
+    time.sleep(10)
+    newlambda.delete_lambda()

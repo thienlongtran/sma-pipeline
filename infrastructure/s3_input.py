@@ -30,6 +30,10 @@ class s3_input_bucket:
     def print_bucket_name(self):
         print(self.bucket_name)
 
-newbucket = s3_input_bucket("talia-4452-f21-thien-upload")
-newbucket.create_bucket()
-newbucket.delete_bucket()
+#Create Bucket for Debugging
+if __name__ == "__main__":
+    import time
+    newbucket = s3_input_bucket("talia-4452-f21-thien-upload-bucket")
+    newbucket.create_bucket()
+    time.sleep(10)
+    newbucket.delete_bucket()
