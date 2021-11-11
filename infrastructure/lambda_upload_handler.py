@@ -14,7 +14,7 @@ class lambda_handler:
             FunctionName = self.handler_name,
             Runtime = "python3.9",
             Role = "arn:aws:iam::768907305587:role/lambda-s3-role",
-            Handler = "lambda_handler",
+            Handler = "lambda_function.lambda_handler",
             Code =  {
                         "ZipFile": open("./lambda_upload_handler/handler_code.zip", "rb").read()
                     }
