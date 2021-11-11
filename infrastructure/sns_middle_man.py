@@ -11,24 +11,29 @@ class s3_input_topic:
         response = self.client.create_topic(
             Name = self.topic_name
         )
-        self.TopicArn = (response["TopicArn"])
         return response
     
     def delete_topic(self):
         print("Deleting lambda input topic...")
-        target_topic_arn = None
-
-        for topic in self.client.list_topics()["Topics"]:
-            if self.topic_name in topic["TopicArn"]:
-                target_topic_arn = (topic["TopicArn"])
 
         response = self.client.delete_topic(
-            TopicArn = target_topic_arn
+            TopicArn = self.get_topic_arn()
+        )
+        return self.response
+    
+    def get_topic_arn(self):
+        for topic in self.client.list_topics()["Topics"]:
+            if self.topic_name in topic["TopicArn"]:
+                return topic["TopicArn"]
+
+    def subscribe_lambda(self, FunctionArn):
+        self.client.subscribe(
+            TopicArn = self.get_topic_arn(),
+            Protocol = "lambda",
+            Endpoint = FunctionArn
         )
 
-        return self.response
-
-#Create Bucket for Debugging
+#Create Topic for Debugging
 if __name__ == "__main__":
     import time
     newtopic = s3_input_topic("talia-4452-f21-thien-upload-topic")

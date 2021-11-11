@@ -18,9 +18,8 @@ def create_infrastructure():
     S3_INPUT_BUCKET.add_lambda_trigger(LAMBDA_UPLOAD_HANDLER.response["FunctionArn"])
     SNS_MIDDLE_MAN.create_topic()
     LAMBDA_MOVING_AVG_HANDLER.create_lambda()
+    SNS_MIDDLE_MAN.subscribe_lambda(LAMBDA_MOVING_AVG_HANDLER.response["FunctionArn"])
     S3_OUTPUT_BUCKET.create_bucket()
-    
-    
 
 def destroy_infrastructure():
     LAMBDA_UPLOAD_HANDLER.delete_lambda()
