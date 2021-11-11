@@ -8,6 +8,8 @@ LAMBDA_UPLOAD_HANDLER = lambda_upload_handler.lambda_handler("upload-handler")
 def create_infrastructure():
     LAMBDA_UPLOAD_HANDLER.create_lambda()
     S3_INPUT_BUCKET.create_bucket()
+    LAMBDA_UPLOAD_HANDLER.add_s3_permission()
+    S3_INPUT_BUCKET.add_lambda_trigger(LAMBDA_UPLOAD_HANDLER.response["FunctionArn"])
 
 def destroy_infrastructure():
     LAMBDA_UPLOAD_HANDLER.delete_lambda()
