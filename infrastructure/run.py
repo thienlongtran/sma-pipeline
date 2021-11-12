@@ -6,9 +6,9 @@ import lambda_moving_avg_handler
 import s3_output
 
 S3_INPUT_BUCKET = s3_input.s3_input_bucket("talia-4452-f21-thien-upload")
-LAMBDA_UPLOAD_HANDLER = lambda_upload_handler.lambda_handler("upload-handler")
-SNS_MIDDLE_MAN = sns_middle_man.s3_input_topic("stock-middle-man")
-LAMBDA_MOVING_AVG_HANDLER = lambda_moving_avg_handler.lambda_handler("moving-avg-handler")
+LAMBDA_UPLOAD_HANDLER = lambda_upload_handler.lambda_handler("talia-4452-f21-upload-handler")
+SNS_MIDDLE_MAN = sns_middle_man.s3_input_topic("talia-4452-f21-sns-middle-man")
+LAMBDA_MOVING_AVG_HANDLER = lambda_moving_avg_handler.lambda_handler("talia-4452-f21-moving-avg-handler")
 S3_OUTPUT_BUCKET = s3_output.s3_output_bucket("talia-4452-f21-thien-results")
 
 def create_infrastructure():
@@ -17,8 +17,10 @@ def create_infrastructure():
     LAMBDA_UPLOAD_HANDLER.add_s3_permission()
     S3_INPUT_BUCKET.add_lambda_trigger(LAMBDA_UPLOAD_HANDLER.response["FunctionArn"])
     SNS_MIDDLE_MAN.create_topic()
+    #TODO: CREATE CONNECTION BETWEEN MIDDLE MAN AND MOVING AVG HANDLER
     LAMBDA_MOVING_AVG_HANDLER.create_lambda()
     SNS_MIDDLE_MAN.subscribe_lambda(LAMBDA_MOVING_AVG_HANDLER.response["FunctionArn"])
+    #TODO: CREATE CONNECTION BETWEEN LAMBDA MOVING AVG HANDLER AND S3 RESULT OUTPUT
     S3_OUTPUT_BUCKET.create_bucket()
 
 def destroy_infrastructure():
