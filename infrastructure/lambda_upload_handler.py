@@ -13,7 +13,7 @@ class lambda_handler:
         self.response = self.client.create_function(
             FunctionName = self.handler_name,
             Runtime = "python3.9",
-            Role = "arn:aws:iam::768907305587:role/lambda-s3-role",
+            Role = "arn:aws:iam::176966333216:role/robomaker_students",
             Handler = "lambda_function.lambda_handler",
             Code =  {
                         "ZipFile": open("./lambda_upload_handler/handler_code.zip", "rb").read()
