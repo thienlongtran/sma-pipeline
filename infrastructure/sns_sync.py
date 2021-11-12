@@ -1,6 +1,6 @@
 import boto3
 
-class s3_input_topic:
+class sns_sync:
     def __init__(self, topic_name):
         self.topic_name = topic_name
         self.client = boto3.client("sns")
@@ -36,7 +36,7 @@ class s3_input_topic:
 #Create Topic for Debugging
 if __name__ == "__main__":
     import time
-    newtopic = s3_input_topic("talia-4452-f21-thien-upload-topic")
+    newtopic = sns_sync("talia-4452-f21-thien-upload-topic")
     newtopic.create_topic()
     time.sleep(10)
     newtopic.delete_topic()
