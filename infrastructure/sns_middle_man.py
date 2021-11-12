@@ -8,10 +8,10 @@ class s3_input_topic:
     
     def create_topic(self):
         print("Creating input topic...")
-        response = self.client.create_topic(
+        self.response = self.client.create_topic(
             Name = self.topic_name
         )
-        return response
+        return self.response
     
     def delete_topic(self):
         print("Deleting lambda input topic...")
@@ -19,7 +19,7 @@ class s3_input_topic:
         response = self.client.delete_topic(
             TopicArn = self.get_topic_arn()
         )
-        return self.response
+        return response
     
     def get_topic_arn(self):
         for topic in self.client.list_topics()["Topics"]:

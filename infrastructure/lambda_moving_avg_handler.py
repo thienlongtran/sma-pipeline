@@ -14,7 +14,7 @@ class lambda_handler:
             Role = "arn:aws:iam::176966333216:role/robomaker_students",
             Handler = "lambda_function.lambda_handler",
             Code =  {
-                        "ZipFile": open("./lambda_upload_handler/handler_code.zip", "rb").read()
+                        "ZipFile": open("./lambda_moving_avg_handler/handler_code.zip", "rb").read()
                     }
         )
         return self.response
@@ -25,15 +25,6 @@ class lambda_handler:
             FunctionName = self.handler_name
         )
         return self.response
-    
-    def add_s3_permission(self):
-        print("Adding S3 invoke permission to Lambda...")
-        self.client.add_permission(
-                                    FunctionName = self.handler_name,
-                                    StatementId = "lambda-invoke-func",
-                                    Action = "lambda:InvokeFunction",
-                                    Principal = "s3.amazonaws.com"
-                                  )
 
 #Create Function for Debugging
 if __name__ == "__main__":
