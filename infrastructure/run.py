@@ -9,7 +9,7 @@ PREFIX = "nyssa"
 S3_INPUT_BUCKET = s3_input.s3_input_bucket(PREFIX + "-4452-f21-thien-upload")
 LAMBDA_UPLOAD_HANDLER = lambda_upload_handler.lambda_handler(PREFIX + "-4452-f21-thien-upload-handler")
 SNS_MIDDLE_MAN = sns_sync.sns_sync(PREFIX + "-4452-f21-thien-sns-sync")
-LAMBDA_MOVING_AVG_HANDLER = lambda_moving_avg_handler.lambda_handler(PREFIX + "-4452-f21-moving-avg-handler")
+LAMBDA_MOVING_AVG_HANDLER = lambda_moving_avg_handler.lambda_handler(PREFIX + "-4452-f21-thien-moving-avg-handler")
 S3_OUTPUT_BUCKET = s3_output.s3_output_bucket(PREFIX + "-4452-f21-thien-results")
 
 def create_infrastructure():

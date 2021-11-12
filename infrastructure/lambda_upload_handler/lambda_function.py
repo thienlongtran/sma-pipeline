@@ -14,7 +14,7 @@ def lambda_handler(event, context):
     for line in s3_client.get_object(Bucket = bucket_event, Key = object_name)["Body"].read().split(b'\n'):
         print(line)
         response = sns_client.publish(
-                                     TopicArn = "arn:aws:sns:us-east-1:176966333216:nyssa-4452-f21-sns-middle-man",
+                                     TopicArn = "arn:aws:sns:us-east-1:176966333216:nyssa-4452-f21-thien-sns-sync",
                                      Message = str(line)
                                      )
 
