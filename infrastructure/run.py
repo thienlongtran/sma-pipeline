@@ -19,6 +19,7 @@ def create_infrastructure():
     S3_INPUT_BUCKET.add_lambda_trigger(LAMBDA_UPLOAD_HANDLER.response["FunctionArn"])
     SNS_MIDDLE_MAN.create_topic()
     LAMBDA_MOVING_AVG_HANDLER.create_lambda()
+    #TODO: ADD SNS TRIGGER TO LAMBDA MOVING AVG HANDLER
     SNS_MIDDLE_MAN.subscribe_lambda(LAMBDA_MOVING_AVG_HANDLER.response["FunctionArn"])
     #TODO: CREATE CONNECTION BETWEEN LAMBDA MOVING AVG HANDLER AND S3 RESULT OUTPUT
     S3_OUTPUT_BUCKET.create_bucket()
