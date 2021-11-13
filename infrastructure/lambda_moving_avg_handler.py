@@ -13,6 +13,7 @@ class lambda_handler:
             Runtime = "python3.9",
             Role = "arn:aws:iam::176966333216:role/robomaker_students",
             Handler = "lambda_function.lambda_handler",
+            Timeout = 600,
             Code =  {
                         "ZipFile": open("./lambda_moving_avg_handler/handler_code.zip", "rb").read()
                     }
