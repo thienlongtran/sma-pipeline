@@ -2,9 +2,9 @@ import boto3
 import json
 
 def lambda_handler(event, context):
+    message = event["Records"][0]["Sns"]["Message"]
     
-    print(event)
-    print(context)
+    print(message)
 
     return {
         'statusCode': 200,

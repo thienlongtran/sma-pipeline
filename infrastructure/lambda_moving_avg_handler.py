@@ -25,6 +25,15 @@ class lambda_handler:
             FunctionName = self.handler_name
         )
         return self.response
+    
+    def add_sns_permission(self):
+        print("Adding permission for Lambda to read SNS...")
+        self.client.add_permission(
+                                    Action = "lambda:InvokeFunction",
+                                    FunctionName = self.handler_name,
+                                    Principal = "sns.amazonaws.com",
+                                    StatementId = "sns-invoke-lambda"
+                                  )
 
 #Create Function for Debugging
 if __name__ == "__main__":
