@@ -3,7 +3,7 @@ import json
 import time
 import os
 
-def wait_until_table_inactive(dynamodb_client):
+def wait_until_table_unactive(dynamodb_client):
     while True:
         response = dynamodb_client.describe_table(
             TableName = os.environ.get("DYNAMODB_NAME")
@@ -49,7 +49,7 @@ def lambda_handler(event, context):
         clean_message = clean_message.replace("<", "").replace(">", "")
         message_array = clean_message.split(",")
         
-        wait_until_table_inactive(dynamodb_client)
+        wait_until_table_unactive(dynamodb_client)
         
         query = dynamodb_client.query(
             TableName = os.environ.get("DYNAMODB_NAME"),
@@ -59,9 +59,28 @@ def lambda_handler(event, context):
             }
         )
         
+        #Variables
+        output = "<TICKER>,<PER>,<AVG_TYPE>,<QUOTE>,<DATE>,<TIME>,<AVG>,<VOL>\n"
+        ticker_name = message_array[0]
+        per = str(query["Items"][0]["Per"]["N"])
+        avg_type = "SMA" + str(message_array[1])
+        quote = message_array[2]
+        
         print("Table size: " + str(query["Count"]))
+
         for line in query["Items"]:
-            print(line)
+            output += "{TICKER},{PER},{AVG_TYPE},{QUOTE},{DATE},{TIME},{AVG},{VOL}\n".format(
+                TICKER = ticker_name,
+                PER = per,
+                AVG_TYPE = avg_type,
+                QUOTE = quote,
+                DATE = str(line["Date"]["N"]),
+                TIME = str(line["Time"]["N"]),
+                AVG = str(line["High"]["N"]),
+                VOL = str(line["Vol"]["N"])
+            )
+            
+        print(output)
     
     #--------------------------------------------------------#
     
