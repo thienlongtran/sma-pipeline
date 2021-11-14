@@ -31,8 +31,8 @@ class dynamodb_stock_data:
                 }
             ],
             ProvisionedThroughput={
-                "ReadCapacityUnits": 10,
-                "WriteCapacityUnits": 100
+                "ReadCapacityUnits": 5,
+                "WriteCapacityUnits": 5
             }
         )
         return self.response
