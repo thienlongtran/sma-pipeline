@@ -7,14 +7,14 @@ class sns_sync:
         self.response = None
     
     def create_topic(self):
-        print("Creating input topic...")
+        print("Creating Sync SNS topic...")
         self.response = self.client.create_topic(
             Name = self.topic_name
         )
         return self.response
     
     def delete_topic(self):
-        print("Deleting lambda input topic...")
+        print("Deleting Sync SNS topic...")
 
         response = self.client.delete_topic(
             TopicArn = self.get_topic_arn()
