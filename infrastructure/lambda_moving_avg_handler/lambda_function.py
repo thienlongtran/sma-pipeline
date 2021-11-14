@@ -14,7 +14,7 @@ def lambda_handler(event, context):
     if message_length == 10:
         print("Writing to DynamoDB...")
         response = dynamodb_client.put_item(
-            TableName = "kara-4452-f21-thien-stock-data",
+            TableName = os.environ.get("DYNAMODB_NAME"),
             Item = {
                 "Ticker": {"S":message_array[0]},
                 "Per": {"N":message_array[1]},

@@ -32,13 +32,24 @@ class lambda_handler:
     #Citation: learned lack of permission as purpose for lambda trigger creation failure from Stack Overflow
     #Link: https://stackoverflow.com/questions/36973134/cant-add-s3-notification-for-lambda-using-boto3
     def add_s3_permission(self):
-        print("Adding S3 invoke permission to Lambda...")
+        print("Adding S3 invoke permission to Lambda upload handler...")
         self.client.add_permission(
-                                    FunctionName = self.handler_name,
-                                    StatementId = "lambda-invoke-func",
-                                    Action = "lambda:InvokeFunction",
-                                    Principal = "s3.amazonaws.com"
-                                  )
+            FunctionName = self.handler_name,
+            StatementId = "lambda-invoke-func",
+            Action = "lambda:InvokeFunction",
+            Principal = "s3.amazonaws.com"
+        )
+    
+    def add_sns_environment_variable(self, sns_arn):
+        print("Adding SNS ARN environment variable to Lambda upload handler...")
+        self.client.update_function_configuration(
+            FunctionName = self.handler_name,
+            Environment = {
+                "Variables": {
+                    "TOPIC_ARN": sns_arn
+                }
+            }
+        )
 
 #Create Function for Debugging
 if __name__ == "__main__":

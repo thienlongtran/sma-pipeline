@@ -1,6 +1,7 @@
 import boto3
 import json
 import time
+import os
 
 def lambda_handler(event, context):
     
@@ -20,9 +21,9 @@ def lambda_handler(event, context):
             print("Sending final line...")
     
         response = sns_client.publish(
-                                     TopicArn = "arn:aws:sns:us-east-1:176966333216:nyssa-4452-f21-thien-sns-sync",
-                                     Message = str(line)
-                                     )
+            TopicArn = os.environ.get("TOPIC_ARN"),
+            Message = str(line)
+        )
                 
     print("All lines successfully sent to SNS.")
 
