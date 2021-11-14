@@ -11,22 +11,22 @@ class dynamodb_stock_data:
         self.response = self.client.create_table(
             AttributeDefinitions = [
                 {
-                    "AttributeName": "Date",
-                    "AttributeType": "N"
+                    "AttributeName": "Ticker",
+                    "AttributeType": "S"
                 },
                 {
-                    "AttributeName": "Time",
-                    "AttributeType": "N"
+                    "AttributeName": "Date_Time",
+                    "AttributeType": "S"
                 }
             ],
             TableName = self.table_name,
             KeySchema = [
                 {
-                    "AttributeName": "Date",
+                    "AttributeName": "Ticker",
                     "KeyType": "HASH"
                 },
                 {
-                    "AttributeName": "Time",
+                    "AttributeName": "Date_Time",
                     "KeyType": "RANGE"
                 }
             ],
