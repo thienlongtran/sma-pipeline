@@ -7,7 +7,7 @@ class lambda_handler:
         self.response = None
     
     def create_lambda(self):
-        print("Creating Lambda upload handler...")
+        print("Creating Lambda moving/rolling average handler...")
         self.response = self.client.create_function(
             FunctionName = self.handler_name,
             Runtime = "python3.9",
@@ -21,14 +21,14 @@ class lambda_handler:
         return self.response
     
     def delete_lambda(self):
-        print("Deleting Lambda upload handler...")
+        print("Deleting Lambda moving/rolling average handler...")
         self.response = self.client.delete_function(
             FunctionName = self.handler_name
         )
         return self.response
     
     def add_sns_permission(self):
-        print("Adding permission for Lambda to read SNS...")
+        print("Adding permission for Lambda moving/rolling average handler to read SNS...")
         self.client.add_permission(
                                     Action = "lambda:InvokeFunction",
                                     FunctionName = self.handler_name,
