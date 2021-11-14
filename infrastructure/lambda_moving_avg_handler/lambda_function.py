@@ -3,16 +3,30 @@ import json
 import time
 import os
 
+def wait_until_table_inactive(dynamodb_client):
+    while True:
+        response = dynamodb_client.describe_table(
+            TableName = os.environ.get("DYNAMODB_NAME")
+        )
+        
+        if response["Table"]["TableStatus"] == "UPDATING":
+            print("Table updating, waiting 5 seconds...")
+            time.sleep(5)
+        else:
+            print("Table done updating...")
+            break
+
 def lambda_handler(event, context):
     message = event["Records"][0]["Sns"]["Message"]
-    clean_message = message.split("b'")[1].split("\\r'")[0]
+    clean_message = message.split("b'")[1].split("\\r'")[0].replace(".US", "")
     message_array = clean_message.split(",")
     message_length = len(message_array)
     dynamodb_client = boto3.client("dynamodb")
     
     #DynamoDB Approach
+    #--------------------------------------------------------#
+    #Data Line
     if message_length == 10:
-        print("Writing to DynamoDB...")
         response = dynamodb_client.put_item(
             TableName = os.environ.get("DYNAMODB_NAME"),
             Item = {
@@ -20,6 +34,7 @@ def lambda_handler(event, context):
                 "Per": {"N":message_array[1]},
                 "Date": {"N":message_array[2]},
                 "Time": {"N":message_array[3]},
+                "Date_Time": {"S":message_array[2] + "_" + message_array[3]},
                 "Open": {"N":message_array[4]},
                 "High": {"N":message_array[5]},
                 "Low": {"N":message_array[6]},
@@ -28,7 +43,28 @@ def lambda_handler(event, context):
                 "Openint":{"N":message_array[9]}
             }
         )
-        print(response)
+    
+    #Ending Line
+    elif message_length == 3:
+        clean_message = clean_message.replace("<", "").replace(">", "")
+        message_array = clean_message.split(",")
+        
+        wait_until_table_inactive(dynamodb_client)
+        
+        query = dynamodb_client.query(
+            TableName = os.environ.get("DYNAMODB_NAME"),
+            KeyConditionExpression = "Ticker = :ticker_name",
+            ExpressionAttributeValues={
+                ":ticker_name": {"S": message_array[0]}
+            }
+        )
+        
+        print("Table size: " + str(query["Count"]))
+        for line in query["Items"]:
+            print(line)
+    
+    #--------------------------------------------------------#
+    
     
     #Global Variable Approach
     """
