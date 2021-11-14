@@ -3,18 +3,37 @@ import json
 import time
 import os
 
-TEST_MESSAGE = ""
-
 def lambda_handler(event, context):
     message = event["Records"][0]["Sns"]["Message"]
     clean_message = message.split("b'")[1].split("\\r'")[0]
     message_array = clean_message.split(",")
     message_length = len(message_array)
-    TICKER_NAME = message_array[0]
+    dynamodb_client = boto3.client("dynamodb")
     
-    global TEST_MESSAGE
+    #DynamoDB Approach
+    if message_length == 10:
+        print("Writing to DynamoDB...")
+        response = dynamodb_client.put_item(
+            TableName = "kara-4452-f21-thien-stock-data",
+            Item = {
+                "Ticker": {"S":message_array[0]},
+                "Per": {"N":message_array[1]},
+                "Date": {"N":message_array[2]},
+                "Time": {"N":message_array[3]},
+                "Open": {"N":message_array[4]},
+                "High": {"N":message_array[5]},
+                "Low": {"N":message_array[6]},
+                "Close": {"N":message_array[7]},
+                "Vol": {"N":message_array[8]},
+                "Openint":{"N":message_array[9]}
+            }
+        )
+        print(response)
     
     #Global Variable Approach
+    """
+    global TEST_MESSAGE
+    
     #Regular Data Line
     if message_length == 10:
         TEST_MESSAGE = TEST_MESSAGE + str(message_array) + "\n"
@@ -26,12 +45,13 @@ def lambda_handler(event, context):
         print("Message length: " + str(message_length))
         print(TEST_MESSAGE)
         TEST_MESSAGE = ""
-        
+    """   
 
     
     
     #Temp Path Approach
     """
+    TICKER_NAME = message_array[0]
     #Init Directory
     if not os.path.exists(TEMP_PATH):
         print("Creating temp directory...")
