@@ -20,7 +20,7 @@ class dynamodb_stock_data:
                 }
             ],
             TableName = self.table_name,
-            KeySchema=[
+            KeySchema = [
                 {
                     "AttributeName": "Date",
                     "KeyType": "HASH"
@@ -30,10 +30,7 @@ class dynamodb_stock_data:
                     "KeyType": "RANGE"
                 }
             ],
-            ProvisionedThroughput={
-                "ReadCapacityUnits": 5,
-                "WriteCapacityUnits": 5
-            }
+            BillingMode = "PAY_PER_REQUEST"
         )
         return self.response
     
