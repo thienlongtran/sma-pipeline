@@ -13,7 +13,7 @@ class lambda_handler:
         self.response = self.client.create_function(
             FunctionName = self.handler_name,
             Runtime = "python3.9",
-            Role = "arn:aws:iam::176966333216:role/robomaker_students",
+            Role = "arn:aws:iam::820729084549:role/robomaker_students",
             Handler = "lambda_function.lambda_handler",
             Timeout = 600,
             Code =  {
