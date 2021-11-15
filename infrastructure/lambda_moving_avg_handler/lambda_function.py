@@ -68,20 +68,33 @@ def lambda_handler(event, context):
         
         print("Table size: " + str(query["Count"]))
 
-        for line in query["Items"]:
+        for i in range(1, len(query["Items"])):
             output += "{TICKER},{PER},{AVG_TYPE},{QUOTE},{DATE},{TIME},{AVG},{VOL}\n".format(
                 TICKER = ticker_name,
                 PER = per,
                 AVG_TYPE = avg_type,
                 QUOTE = quote,
-                DATE = str(line["Date"]["N"]),
-                TIME = str(line["Time"]["N"]),
-                AVG = str(line["High"]["N"]),
-                VOL = str(line["Vol"]["N"])
+                DATE = str(query["Items"][i]["Date"]["N"]),
+                TIME = str(query["Items"][i]["Time"]["N"]),
+                AVG = str((float(query["Items"][i]["High"]["N"]) + float(query["Items"][i-1]["High"]["N"])) / 2),
+                VOL = str((int(query["Items"][i]["Vol"]["N"]) + int(query["Items"][i]["Vol"]["N"])) / 2)
             )
-            
         print(output)
-    
+        
+        TEMP_PATH = "/tmp/"
+        out = open(TEMP_PATH + ticker_name + "-" + avg_type + ".csv", "a")
+        out.write(output)
+        out.close()
+        
+        s3_client = boto3.client("s3")
+        response = s3_client.put_object(
+            Body = (open(TEMP_PATH + ticker_name + "-" + avg_type + ".csv", "rb")),
+            Bucket = "sara-4452-f21-thien-results",
+            Key = (ticker_name + "-" + avg_type + ".csv")
+        )
+        
+        print(response)
+        
     #--------------------------------------------------------#
     
     
