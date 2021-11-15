@@ -17,7 +17,7 @@ def lambda_handler(event, context):
     object_name = event["Records"][0]["s3"]["object"]["key"]
     text_file = s3_client.get_object(Bucket = bucket_event, Key = object_name)["Body"].read().split(b'\n')
         
-    for i in range(len(text_file)-1):
+    for i in range(1, len(text_file)-1):
         publish_message(str(text_file[i]))
         
     print("Sleeping for 10 seconds before sending final line...")
