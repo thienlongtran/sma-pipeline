@@ -17,6 +17,9 @@ class aws_project_infrastructure:
         self.S3_OUTPUT_BUCKET = s3_output.s3_output_bucket(self.PREFIX + "-4452-f21-thien-results")
 
     def create_infrastructure(self):
+        """
+        Setup the AWS services and resources
+        """
         self.S3_INPUT_BUCKET.create_bucket()
         self.LAMBDA_UPLOAD_HANDLER.create_lambda()
         self.LAMBDA_UPLOAD_HANDLER.add_s3_permission()
@@ -34,6 +37,9 @@ class aws_project_infrastructure:
             )
 
     def destroy_infrastructure(self):
+        """
+        Cleanup the AWS services and resources
+        """
         self.S3_INPUT_BUCKET.delete_bucket()
         self.LAMBDA_UPLOAD_HANDLER.delete_lambda()
         self.SNS_MIDDLE_MAN.delete_topic()

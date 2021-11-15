@@ -4,6 +4,9 @@ import time
 import os
 
 def wait_until_table_unactive(dynamodb_client):
+    """
+    Waits until the table is no longer writing any messages to ensure data integrity
+    """
     while True:
         response = dynamodb_client.describe_table(
             TableName = os.environ.get("DYNAMODB_NAME")
@@ -17,6 +20,13 @@ def wait_until_table_unactive(dynamodb_client):
             break
 
 def lambda_handler(event, context):
+    """
+    Reads message from SNS and processes the information to get Simple Moving Average
+
+    Cases:
+        message_length == 10: message gives the stock data - add to DynamoDB
+        message_length == 3: message gives the type to Simple Moving Average to calculate - calculate SMA from parameters
+    """
     message = event["Records"][0]["Sns"]["Message"]
     clean_message = message.split("b'")[1].split("\\r'")[0].replace(".US", "")
     message_array = clean_message.split(",")
@@ -92,9 +102,8 @@ def lambda_handler(event, context):
             if i < len(query["Items"])-1:
                 money_sum_array[i+1] = money_sum_array[i] - float(query["Items"][i-ma_period][quote.title()]["N"]) + float(query["Items"][i][quote.title()]["N"])
                 vol_sum_array[i+1] = vol_sum_array[i] - float(query["Items"][i-ma_period]["Vol"]["N"]) + float(query["Items"][i]["Vol"]["N"])
-            
-        print(output)
         
+        #Write output to temporary file and send file to S3
         TEMP_PATH = "/tmp/"
         out = open(TEMP_PATH + ticker_name + "-" + avg_type + ".csv", "a")
         out.write(output)
@@ -172,6 +181,6 @@ def lambda_handler(event, context):
     """
     
     return {
-        'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!')
+        "statusCode": 200,
+        "body": json.dumps("Hello from Lambda Moving Average Handler!")
     }
