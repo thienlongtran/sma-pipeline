@@ -35,7 +35,7 @@ class s3_input_bucket:
             NotificationConfiguration= {"LambdaFunctionConfigurations":[
                 {
                     "LambdaFunctionArn": lambda_arn,
-                    "Events": ["s3:ObjectCreated:*"]
+                    "Events": ["s3:ObjectCreated:Put"]
                 }
             ]}
         )
