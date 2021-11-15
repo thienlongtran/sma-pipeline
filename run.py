@@ -1,10 +1,10 @@
 import sys
-import lambda_upload_handler
-import s3_input
-import sns_sync
-import lambda_moving_avg_handler
-import s3_output
-import dynamodb_stock_data
+from infrastructure import lambda_upload_handler
+from infrastructure import s3_input
+from infrastructure import sns_sync
+from infrastructure import lambda_moving_avg_handler
+from infrastructure import s3_output
+from infrastructure import dynamodb_stock_data
 
 class aws_project_infrastructure:
     def __init__(self, prefix):

@@ -17,7 +17,7 @@ class lambda_handler:
             Handler = "lambda_function.lambda_handler",
             Timeout = 600,
             Code =  {
-                        "ZipFile": open("./lambda_upload_handler/handler_code.zip", "rb").read()
+                        "ZipFile": open("./infrastructure/lambda_upload_handler/handler_code.zip", "rb").read()
                     }
         )
         return self.response
