@@ -13,6 +13,7 @@ class lambda_handler:
             Runtime = "python3.9",
             Role = "arn:aws:iam::768907305587:role/robomaker_students",
             Handler = "lambda_function.lambda_handler",
+            Description = "Save lines of stock data to a DynamoDB table, and calculate Simple Moving Average at end of file.",
             Timeout = 600,
             Code =  {
                         "ZipFile": open("./infrastructure/lambda_moving_avg_handler/handler_code.zip", "rb").read()

@@ -15,6 +15,7 @@ class lambda_handler:
             Runtime = "python3.9",
             Role = "arn:aws:iam::768907305587:role/robomaker_students",
             Handler = "lambda_function.lambda_handler",
+            Description = "Parse lines of data from an S3 file trigger and publish to an SNS topic.",
             Timeout = 600,
             Code =  {
                         "ZipFile": open("./infrastructure/lambda_upload_handler/handler_code.zip", "rb").read()
