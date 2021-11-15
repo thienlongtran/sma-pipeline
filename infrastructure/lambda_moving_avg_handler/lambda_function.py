@@ -65,10 +65,18 @@ def lambda_handler(event, context):
         per = str(query["Items"][0]["Per"]["N"])
         avg_type = "SMA" + str(message_array[1])
         quote = message_array[2].replace("'", "")
+        ma_period = int(message_array[1])
         
-        print("Table size: " + str(query["Count"]))
-
-        for i in range(1, len(query["Items"])):
+        #Setup Sum and Volume Array
+        money_sum_array = [0] * query["Count"]
+        vol_sum_array = [0] * query["Count"]
+        
+        for i in range(ma_period):
+            money_sum_array[ma_period] += float(query["Items"][i][quote.title()]["N"])
+            vol_sum_array[ma_period] += int(query["Items"][i]["Vol"]["N"])
+            
+        #Calculate Moving Average
+        for i in range(ma_period, len(query["Items"])):
             output += "{TICKER},{PER},{AVG_TYPE},{QUOTE},{DATE},{TIME},{AVG},{VOL}\n".format(
                 TICKER = ticker_name,
                 PER = per,
@@ -76,9 +84,15 @@ def lambda_handler(event, context):
                 QUOTE = quote,
                 DATE = str(query["Items"][i]["Date"]["N"]),
                 TIME = str(query["Items"][i]["Time"]["N"]),
-                AVG = "{:.2f}".format((float(query["Items"][i][quote.title()]["N"]) + float(query["Items"][i-1][quote.title()]["N"]) ) / 2),
-                VOL = str(int((int(query["Items"][i]["Vol"]["N"]) + int(query["Items"][i]["Vol"]["N"])) / 2))
+                AVG = "{:.2f}".format(money_sum_array[i] / ma_period),
+                VOL = str(int(vol_sum_array[i] / ma_period))
             )
+            
+            #Dynamic Programming approach to storing sums
+            if i < len(query["Items"])-1:
+                money_sum_array[i+1] = money_sum_array[i] - float(query["Items"][i-ma_period][quote.title()]["N"]) + float(query["Items"][i][quote.title()]["N"])
+                vol_sum_array[i+1] = vol_sum_array[i] - float(query["Items"][i-ma_period]["Vol"]["N"]) + float(query["Items"][i]["Vol"]["N"])
+            
         print(output)
         
         TEMP_PATH = "/tmp/"
