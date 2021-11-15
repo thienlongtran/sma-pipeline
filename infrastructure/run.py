@@ -27,9 +27,11 @@ class aws_project_infrastructure:
         self.LAMBDA_MOVING_AVG_HANDLER.add_sns_permission()
         self.SNS_MIDDLE_MAN.subscribe_lambda(self.LAMBDA_MOVING_AVG_HANDLER.response["FunctionArn"])
         self.DYNAMODB_STOCK_DATA.create_table()
-        self.LAMBDA_MOVING_AVG_HANDLER.add_dynamodb_environment_variable(self.DYNAMODB_STOCK_DATA.response["TableDescription"]["TableName"])
-        #TODO: CREATE CONNECTION BETWEEN LAMBDA MOVING AVG HANDLER AND S3 RESULT OUTPUT
         self.S3_OUTPUT_BUCKET.create_bucket()
+        self.LAMBDA_MOVING_AVG_HANDLER.add_environment_variable(
+            self.DYNAMODB_STOCK_DATA.table_name,
+            self.S3_OUTPUT_BUCKET.bucket_name
+            )
 
     def destroy_infrastructure(self):
         self.S3_INPUT_BUCKET.delete_bucket()

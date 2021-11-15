@@ -36,13 +36,14 @@ class lambda_handler:
             StatementId = "sns-invoke-lambda"
         )
 
-    def add_dynamodb_environment_variable(self, dynamodb_name):
-        print("Adding DynamoDB table name environment variable to Lambda moving/rolling average handler...")
+    def add_environment_variable(self, dynamodb_name, bucket_name):
+        print("Adding S3 & DynamoDB environment variable to Lambda moving/rolling average handler...")
         self.client.update_function_configuration(
             FunctionName = self.handler_name,
             Environment = {
                 "Variables": {
-                    "DYNAMODB_NAME": dynamodb_name
+                    "DYNAMODB_NAME": dynamodb_name,
+                    "BUCKET_NAME": bucket_name
                 }
             }
         )

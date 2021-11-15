@@ -77,7 +77,7 @@ def lambda_handler(event, context):
                 DATE = str(query["Items"][i]["Date"]["N"]),
                 TIME = str(query["Items"][i]["Time"]["N"]),
                 AVG = str((float(query["Items"][i]["High"]["N"]) + float(query["Items"][i-1]["High"]["N"])) / 2),
-                VOL = str((int(query["Items"][i]["Vol"]["N"]) + int(query["Items"][i]["Vol"]["N"])) / 2)
+                VOL = str(int((int(query["Items"][i]["Vol"]["N"]) + int(query["Items"][i]["Vol"]["N"])) / 2))
             )
         print(output)
         
@@ -89,7 +89,7 @@ def lambda_handler(event, context):
         s3_client = boto3.client("s3")
         response = s3_client.put_object(
             Body = (open(TEMP_PATH + ticker_name + "-" + avg_type + ".csv", "rb")),
-            Bucket = "sara-4452-f21-thien-results",
+            Bucket = os.environ.get("BUCKET_NAME"),
             Key = (ticker_name + "-" + avg_type + ".csv")
         )
         
