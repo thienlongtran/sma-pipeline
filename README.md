@@ -5,11 +5,11 @@ An automated, cloud-based Simple Moving Average calculator which allows users to
 #### Infrastructure
 This program makes use of various AWS services. The high-level steps of the program are as follows:
 
-* A user application program (or the users themselves) uploads a valid CSV file of stock data to the primary upload S3 bucket.
-* The upload triggers the Lambda Upload Handler which parses the triggering file line-by-line and publishes each line to the Sync SNS topic.
-* The Sync SNS topic forwards the data to the Lambda Moving Average Handler.
-* The Lambda Moving Average Handler sends the data to a DynamoDB table for persistent storage.
-* Once all of the data are uploaded, the Lambda Moving Average Handler queries the data from the DynamoDB table, calculates the Simple Moving Average, outputs the result to a CSV file, and then sends the CSV file to the output results S3 bucket.
+* A `user-application program` (or the users themselves) uploads a valid CSV file of stock data to the `primary-upload S3 bucket`.
+* The upload triggers the `Lambda Upload Handler` which parses the triggering file line-by-line and publishes each line to the `Sync SNS topic`.
+* The `Sync SNS topic` forwards the data to the `Lambda Moving Average handler`.
+* The `Lambda Moving Average handler` sends the data to a `DynamoDB table` for persistent storage.
+* Once all of the data are uploaded, the `Lambda Moving Average handler` queries the data from the `DynamoDB table`, calculates the Simple Moving Average, outputs the result to a CSV file, and then sends the CSV file to the `output-results S3 bucket`.
 
 ![AWS Infrastructure](infrastructure.jpg)
 
