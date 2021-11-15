@@ -64,7 +64,7 @@ def lambda_handler(event, context):
         ticker_name = message_array[0]
         per = str(query["Items"][0]["Per"]["N"])
         avg_type = "SMA" + str(message_array[1])
-        quote = message_array[2]
+        quote = message_array[2].replace("'", "")
         
         print("Table size: " + str(query["Count"]))
 
@@ -76,7 +76,7 @@ def lambda_handler(event, context):
                 QUOTE = quote,
                 DATE = str(query["Items"][i]["Date"]["N"]),
                 TIME = str(query["Items"][i]["Time"]["N"]),
-                AVG = str((float(query["Items"][i]["High"]["N"]) + float(query["Items"][i-1]["High"]["N"])) / 2),
+                AVG = "{:.2f}".format((float(query["Items"][i][quote.title()]["N"]) + float(query["Items"][i-1][quote.title()]["N"]) ) / 2),
                 VOL = str(int((int(query["Items"][i]["Vol"]["N"]) + int(query["Items"][i]["Vol"]["N"])) / 2))
             )
         print(output)
