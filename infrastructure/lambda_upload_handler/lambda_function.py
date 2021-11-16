@@ -27,8 +27,8 @@ def lambda_handler(event, context):
         publish_message(str(text_file[i]))
     
     #Delay sending of final message
-    print("Sleeping for 10 seconds before sending final line...")
-    time.sleep(10)
+    print("Sleeping for 20 seconds before sending final line...")
+    time.sleep(20)
     print("Sending final line...")
     publish_message(str(text_file[len(text_file)-1]))
     print("All lines successfully sent to SNS.")

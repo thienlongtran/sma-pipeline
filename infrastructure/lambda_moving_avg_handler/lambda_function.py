@@ -3,22 +3,6 @@ import json
 import time
 import os
 
-def wait_until_table_unactive(dynamodb_client):
-    """
-    Waits until the table is no longer writing any messages to ensure data integrity
-    """
-    while True:
-        response = dynamodb_client.describe_table(
-            TableName = os.environ.get("DYNAMODB_NAME")
-        )
-        
-        if response["Table"]["TableStatus"] == "UPDATING":
-            print("Table updating, waiting 5 seconds...")
-            time.sleep(5)
-        else:
-            print("Table done updating...")
-            break
-
 def lambda_handler(event, context):
     """
     Reads message from SNS and processes the information to get Simple Moving Average
@@ -59,7 +43,8 @@ def lambda_handler(event, context):
         clean_message = clean_message.replace("<", "").replace(">", "")
         message_array = clean_message.split(",")
         
-        wait_until_table_unactive(dynamodb_client)
+        #Waits some time to ensure data integrity
+        time.sleep(20)
         
         query = dynamodb_client.query(
             TableName = os.environ.get("DYNAMODB_NAME"),
