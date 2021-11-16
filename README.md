@@ -13,6 +13,9 @@ This program makes use of various AWS services. The high-level steps of the prog
 
 ![AWS Infrastructure](infrastructure.jpg)
 
+#### Showcase Links
+* [Video (Zoom)](https://uno.zoom.us/rec/share/XuukC9u3so3nJBuOW2fNJejxjrZMT21UHjHrwaWYwG71rEVG6OwS-NH-dQVnVtLp.nCd__gqf4iWIuw5O?startTime=1637028938000)
+* [Video (Youtube)](https://youtu.be/osPuFVPD03Q)
 ## Guide
 #### Requirements
 This program requires the AWS Command Line Interface and Boto3.
