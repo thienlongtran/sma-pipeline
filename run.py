@@ -65,3 +65,6 @@ if __name__ == "__main__":
         aws_base_infrastructure.create_infrastructure()
     elif sys.argv[1] == "destroy":
         aws_base_infrastructure.destroy_infrastructure()
+    else:
+        print("Error: parameter must be either 'create' or 'destroy'")
+        exit()
