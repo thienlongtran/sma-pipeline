@@ -29,5 +29,5 @@ python3 run.py create
 #### Deleting Infrastructure
 Cleanup and delete the infrastructure once done to keep AWS account tidy and avoid additional charges.
 ```
-python3 run.py delete
+python3 run.py destroy
 ```
